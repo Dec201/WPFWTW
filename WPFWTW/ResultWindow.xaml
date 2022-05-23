@@ -1,0 +1,59 @@
+﻿<Window x:Class="WPFWTW.ResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFWTW"
+        mc:Ignorable="d"
+                FontSize="15" FontFamily="Tahoma" 
+        Title="Results Window" Height="350" Width="700"
+        Background="#e9c7fc"
+        Foreground="#3c005e"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="6" Grid.Column="1" Grid.Row="1" TextAlignment="Center"  FontSize="30" FontWeight="Bold" Text="WTW Development Challenge" Margin="10, 0, 0, 10" />
+
+        <TextBlock Grid.ColumnSpan="6" Grid.Column="1" Grid.Row="2" Width="500" TextAlignment="Center" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                   Text="Results Data"/>
+
+        <Image Grid.ColumnSpan="6"  Grid.Column="1" Grid.Row="3" Width="70" Height="40" Source="images/wtw-logo.png" HorizontalAlignment="Center" Margin="0, 20, 0, 20"/>
+
+        <Button x:Name="returnToMainWindow" Grid.ColumnSpan="6" Grid.Column="1" Grid.Row="7" Width="170" Click="returnToMainWindow_Click">
+            <TextBlock Text="Back to Main Window"></TextBlock>
+        </Button>
+        
+        <FlowDocumentReader x:Name="outputFileReader" Grid.ColumnSpan="6"  Grid.Column="1" Grid.Row="8"></FlowDocumentReader>
+        
+
+
+
+
+
+
+    </Grid>
+</Window>
+
