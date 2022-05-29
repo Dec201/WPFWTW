@@ -95,7 +95,6 @@ namespace WPFWTW.Data
             developmentYearsRange = (findLatestDevYear - lowestOriginDate) + 1;
 
             // collecting and saving first line data
-            Console.WriteLine(lowestOriginDate + ", " + developmentYearsRange);
             string intialData = lowestOriginDate + ", " + developmentYearsRange;
             SaveData(intialData);
         }
@@ -104,48 +103,55 @@ namespace WPFWTW.Data
         private void MainDataCollection()
         {
 
-            /*
-             Current Logic Incorrect - Does not equate for null origin/dev years
-
-            loop through from origin year min - find latest dev year with origin year - count different
-            loop through difference increment'+1 onto dev year if dev year == null stick with current cumlativeValue
-            if dev/origin year both null, result - 0
-             */
-
-            // select all different products
+            // select all different products and origin years
             var differentProductNames = claimsDataModels.Select(x => x.Product).Distinct();
-            float cumulativeValue = 0;
+            var distinctOriginYears = claimsDataModels.Select(x => x.OriginYear).Distinct().OrderBy(x => x);
 
             // loop depends on number of different products
             foreach (var product in differentProductNames)
             {
 
-                IEnumerable<ClaimsDataModel> separateProductList = claimsDataModels.Where(x => x.Product == product);
-
                 StringBuilder currentProductCumulative = new StringBuilder();
                 currentProductCumulative.Append(product);
+                float cumulativeValue = 0;
 
-                foreach (var item in separateProductList)
+                // loop through origin years
+                for (int currentOriginYear = distinctOriginYears.Min(); currentOriginYear < (distinctOriginYears.Max() + 1); currentOriginYear++)
                 {
 
-                    if (item.DevelopmentYear == item.OriginYear)
+                    // find all development years within the set current origin year
+                    var findDevYearMax = (from x in claimsDataModels where x.OriginYear == currentOriginYear select x.DevelopmentYear).Max();
+                    var findDevYearMin = (from x in claimsDataModels where x.OriginYear == currentOriginYear select x.DevelopmentYear).Min();
+
+                    //  loop through development year range
+                    for (int currentDevYear = findDevYearMin; currentDevYear < findDevYearMax + 1; currentDevYear++)
                     {
-                        cumulativeValue = item.IncrementalValue;
+
+                        var findMatchingClaim = claimsDataModels.Find(x => (x.Product == product) && (x.OriginYear == currentOriginYear) && (x.DevelopmentYear == currentDevYear));
+
+                        if (findMatchingClaim != null)
+                        {
+                            cumulativeValue += findMatchingClaim.IncrementalValue;
+                        }
+                        else
+                        {
+                            cumulativeValue += 0;
+                        }
+
+                        currentProductCumulative.Append(", " + cumulativeValue);
+
                     }
 
-                    if (item.DevelopmentYear != item.OriginYear)
-                    {
-                        cumulativeValue += item.IncrementalValue;
-                    }
-
-                    currentProductCumulative.Append(", " + cumulativeValue);
+                    cumulativeValue = 0;
 
                 }
 
-
-                Console.WriteLine(currentProductCumulative);
                 SaveData(currentProductCumulative.ToString());
+
             }
+
+            
+            
         }
 
 
